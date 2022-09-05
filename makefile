@@ -26,9 +26,11 @@ CFLAGS  = -g -Wall -I $(SRC)/$(INCLUDES)
 
 SOURCES=$(wildcard ${SRC}/*.c)
 OBJECTS=$(patsubst ${SRC}%.c, ${OBJ}%.o, $(SOURCES))
+HEADERS=$(patsubst ${SRC}%.c, ${SRC}/{INCLUDES}%.h, $(SOURCES))
 
 FILES=$(patsubst ${SRC}/%.c, %, $(SOURCES))
 OFILES=$(patsubst %, %.o, $(FILES))
+
 
 
 
@@ -44,7 +46,7 @@ $(BINDER)/${BUILD}: ${OBJECTS}
 	@mkdir -p  $(BINDER)
 	gcc $(CFLAGS) -o $@  ${OBJECTS}
 
-${OBJECTS}: ${OBJ}%.o : ${SRC}%.c
+${OBJECTS}: ${OBJ}%.o : ${SRC}%.c $(SRC)/$(INCLUDES)%.h
 	@mkdir -p $(OBJ)
 	$(CC) $(CFLAGS) -o $@  -c $<
 
